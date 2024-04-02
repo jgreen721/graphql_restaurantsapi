@@ -4,8 +4,8 @@ const app = express();
 const PORT = process.env.PORT || 4455;
 
 app.get("/", (req, res) => {
-  console.log("/users pinged");
-  res.json({ status: 200, msg: "users api backend" });
+  console.log("/restaurants pinged");
+  res.json({ status: 200, msg: "restaurants api backend" });
 });
 
 const restaurants = [
@@ -117,14 +117,19 @@ const restaurants = [
 ];
 
 app.get("/api/v1/restaurants", (req, res) => {
-  res.json({ status: 200, users });
+  res.json({ status: 200, restaurants });
 });
 
 app.get("/api/v1/restaurants/:id", (req, res) => {
-  let findUser = users.find((u) => u.id == req.params.id);
-  if (!findUser)
-    return res.json({ status: 404, msg: "User couldn't be found" });
-  res.json({ status: 200, user: findUser });
+  let foundRestaurant = restaurants.find((u) => u.id == req.params.id);
+  if (!foundRestaurant)
+    return res.json({ status: 404, msg: "Restaurant couldn't be found" });
+  res.json({ status: 200, user: foundRestaurant });
+});
+
+app.use((req, res, next) => {
+  res.redirect("/");
+  next();
 });
 
 app.listen(PORT, console.log(`Listening in on port ${PORT}`));
